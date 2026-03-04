@@ -5,13 +5,7 @@ import React from "react"
 import { Logo } from "@/components/logo"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-
-const menuItems = [
-  { name: "Features", href: "#link" },
-  { name: "Solution", href: "#link" },
-  { name: "Pricing", href: "#link" },
-  { name: "About", href: "#link" },
-]
+import { useSiteI18n } from "@/lib/site-i18n"
 
 type PreviewMode = "web" | "mobile"
 
@@ -23,6 +17,14 @@ interface HeroHeaderProps {
 export const HeroHeader = ({ previewMode, onPreviewModeChange }: HeroHeaderProps) => {
   const [menuState, setMenuState] = React.useState(false)
   const [isScrolled, setIsScrolled] = React.useState(false)
+  const { locale, setLocale, t } = useSiteI18n()
+
+  const menuItems = [
+    { name: t.nav.features, href: "#link" },
+    { name: t.nav.solutions, href: "#link" },
+    { name: t.nav.platform, href: "#link" },
+    { name: t.nav.roadmap, href: "#link" },
+  ]
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -48,7 +50,7 @@ export const HeroHeader = ({ previewMode, onPreviewModeChange }: HeroHeaderProps
 
               <button
                 onClick={() => setMenuState(!menuState)}
-                aria-label={menuState == true ? "Close Menu" : "Open Menu"}
+                aria-label={menuState == true ? t.nav.closeMenu : t.nav.openMenu}
                 className="relative z-20 -m-2.5 -mr-4 block cursor-pointer p-2.5 lg:hidden"
               >
                 <Menu className="in-data-[state=active]:rotate-180 in-data-[state=active]:scale-0 in-data-[state=active]:opacity-0 m-auto size-6 duration-200" />
@@ -56,19 +58,45 @@ export const HeroHeader = ({ previewMode, onPreviewModeChange }: HeroHeaderProps
               </button>
             </div>
 
-            <div className="absolute inset-0 m-auto hidden size-fit lg:block">
-              <ul className="flex gap-8 text-sm">
+            <div className="absolute inset-0 m-auto hidden size-fit items-center gap-6 lg:flex">
+              <ul className="flex gap-6 text-sm">
                 {menuItems.map((item, index) => (
                   <li key={index}>
                     <Link
                       href={item.href}
-                      className="text-muted-foreground hover:text-accent-foreground block duration-150"
+                      className="text-muted-foreground hover:text-foreground block transition-colors duration-150"
                     >
                       <span>{item.name}</span>
                     </Link>
                   </li>
                 ))}
               </ul>
+              <div className="flex items-center gap-1 rounded-full border bg-muted/30 p-1">
+                <button
+                  type="button"
+                  onClick={() => onPreviewModeChange("mobile")}
+                  className={cn(
+                    "rounded-full px-3 py-1 text-xs font-medium transition-all",
+                    previewMode === "mobile"
+                      ? "bg-background text-foreground shadow-sm"
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  {t.nav.mobile}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onPreviewModeChange("web")}
+                  className={cn(
+                    "rounded-full px-3 py-1 text-xs font-medium transition-all",
+                    previewMode === "web"
+                      ? "bg-background text-foreground shadow-sm"
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  {t.nav.web}
+                </button>
+              </div>
             </div>
 
             <div className="bg-background in-data-[state=active]:block lg:in-data-[state=active]:flex mb-6 hidden w-full flex-wrap items-center justify-end space-y-8 rounded-3xl border p-6 shadow-2xl shadow-zinc-300/20 md:flex-nowrap lg:m-0 lg:flex lg:w-fit lg:gap-6 lg:space-y-0 lg:border-transparent lg:bg-transparent lg:p-0 lg:shadow-none dark:shadow-none dark:lg:bg-transparent">
@@ -85,9 +113,7 @@ export const HeroHeader = ({ previewMode, onPreviewModeChange }: HeroHeaderProps
                     </li>
                   ))}
                 </ul>
-              </div>
-              <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit">
-                <div className="flex w-full items-center gap-1 rounded-full border p-1 md:w-auto">
+                <div className="mt-4 flex items-center gap-1 rounded-full border p-1">
                   <button
                     type="button"
                     onClick={() => onPreviewModeChange("mobile")}
@@ -98,7 +124,7 @@ export const HeroHeader = ({ previewMode, onPreviewModeChange }: HeroHeaderProps
                         : "text-muted-foreground hover:text-foreground"
                     )}
                   >
-                    手机端
+                    {t.nav.mobile}
                   </button>
                   <button
                     type="button"
@@ -110,8 +136,22 @@ export const HeroHeader = ({ previewMode, onPreviewModeChange }: HeroHeaderProps
                         : "text-muted-foreground hover:text-foreground"
                     )}
                   >
-                    网页端
+                    {t.nav.web}
                   </button>
+                </div>
+              </div>
+              <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit">
+                <div className="flex w-full items-center gap-1 rounded-full border p-1 md:w-auto">
+                  <LangButton
+                    active={locale === "zh"}
+                    onClick={() => setLocale("zh")}
+                    label={t.nav.languageZh}
+                  />
+                  <LangButton
+                    active={locale === "en"}
+                    onClick={() => setLocale("en")}
+                    label={t.nav.languageEn}
+                  />
                 </div>
                 <Button
                   asChild
@@ -120,17 +160,17 @@ export const HeroHeader = ({ previewMode, onPreviewModeChange }: HeroHeaderProps
                   className={cn(isScrolled && "lg:hidden")}
                 >
                   <Link href="#">
-                    <span>Login</span>
+                    <span>{t.nav.login}</span>
                   </Link>
                 </Button>
                 <Button asChild size="sm" className={cn(isScrolled && "lg:hidden")}>
                   <Link href="#">
-                    <span>Sign Up</span>
+                    <span>{t.nav.signup}</span>
                   </Link>
                 </Button>
                 <Button asChild size="sm" className={cn(isScrolled ? "lg:inline-flex" : "hidden")}>
                   <Link href="#">
-                    <span>Get Started</span>
+                    <span>{t.nav.getStarted}</span>
                   </Link>
                 </Button>
               </div>
@@ -141,3 +181,24 @@ export const HeroHeader = ({ previewMode, onPreviewModeChange }: HeroHeaderProps
     </header>
   )
 }
+
+const LangButton = ({
+  active,
+  onClick,
+  label,
+}: {
+  active: boolean
+  onClick: () => void
+  label: string
+}) => (
+  <button
+    type="button"
+    onClick={onClick}
+    className={cn(
+      "rounded-full px-3 py-1 text-xs transition-colors",
+      active ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground"
+    )}
+  >
+    {label}
+  </button>
+)

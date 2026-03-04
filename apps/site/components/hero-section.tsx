@@ -7,6 +7,7 @@ import React, { useState } from "react"
 import { AnimatedGroup } from "@/components/ui/animated-group"
 import { Button } from "@/components/ui/button"
 import { TextEffect } from "@/components/ui/text-effect"
+import { useSiteI18n } from "@/lib/site-i18n"
 import { HeroHeader } from "./header"
 
 const transitionVariants = {
@@ -31,6 +32,7 @@ const transitionVariants = {
 
 export default function HeroSection() {
   const [previewMode, setPreviewMode] = useState<"web" | "mobile">("web")
+  const { t } = useSiteI18n()
 
   return (
     <>
@@ -95,7 +97,7 @@ export default function HeroSection() {
                     className="hover:bg-background dark:hover:border-t-border bg-muted group mx-auto flex w-fit items-center gap-4 rounded-full border p-1 pl-4 shadow-md shadow-zinc-950/5 transition-colors duration-300 dark:border-t-white/5 dark:shadow-zinc-950"
                   >
                     <span className="text-foreground text-sm">
-                      Introducing Support for AI Models
+                      {t.hero.badge}
                     </span>
                     <span className="dark:border-background block h-4 w-0.5 border-l bg-white dark:bg-zinc-700"></span>
 
@@ -118,7 +120,7 @@ export default function HeroSection() {
                   as="h1"
                   className="mx-auto mt-8 max-w-4xl text-balance text-5xl max-md:font-semibold md:text-7xl lg:mt-16 xl:text-[5.25rem]"
                 >
-                  Modern Solutions for Customer Engagement
+                  {t.hero.title}
                 </TextEffect>
                 <TextEffect
                   per="line"
@@ -128,8 +130,7 @@ export default function HeroSection() {
                   as="p"
                   className="mx-auto mt-8 max-w-2xl text-balance text-lg"
                 >
-                  Highly customizable components for building modern websites and applications that
-                  look and feel the way you mean it.
+                  {t.hero.subtitle}
                 </TextEffect>
 
                 <AnimatedGroup
@@ -152,7 +153,7 @@ export default function HeroSection() {
                   >
                     <Button asChild size="lg" className="rounded-xl px-5 text-base">
                       <Link href="#link">
-                        <span className="text-nowrap">Start Building</span>
+                        <span className="text-nowrap">{t.hero.primaryCta}</span>
                       </Link>
                     </Button>
                   </div>
@@ -164,7 +165,7 @@ export default function HeroSection() {
                     className="h-10.5 rounded-xl px-5"
                   >
                     <Link href="#link">
-                      <span className="text-nowrap">Request a demo</span>
+                      <span className="text-nowrap">{t.hero.secondaryCta}</span>
                     </Link>
                   </Button>
                 </AnimatedGroup>
@@ -204,7 +205,7 @@ export default function HeroSection() {
                       <div className="relative h-96 overflow-hidden rounded-[1.5rem] border p-2 pb-12 before:absolute before:inset-0 before:bg-[repeating-linear-gradient(-45deg,var(--color-border),var(--color-border)_1px,transparent_1px,transparent_6px)] before:opacity-50"></div>
                     </div>
                     <div className="bg-muted dark:bg-background/50 border-border/50 mx-auto w-80 translate-x-4 rounded-[2rem] border p-2 backdrop-blur-3xl [mask-image:linear-gradient(to_bottom,#000_50%,transparent_90%)] sm:translate-x-8">
-                      <div className="bg-background space-y-2 overflow-hidden rounded-[1.5rem] border p-2 shadow-xl dark:bg-white/5 dark:shadow-black dark:backdrop-blur-3xl">
+                    <div className="bg-background space-y-2 overflow-hidden rounded-[1.5rem] border p-2 shadow-xl dark:bg-white/5 dark:shadow-black dark:backdrop-blur-3xl">
                         <MobileStatsCard />
                         <div className="bg-muted rounded-[1rem] p-3 pb-6 dark:bg-white/5">
                           <MobileBookmarkPreview />
@@ -224,6 +225,7 @@ export default function HeroSection() {
 }
 
 const MobileStatsCard = () => {
+  const { t } = useSiteI18n()
   return (
     <div className="relative space-y-3 rounded-[1rem] bg-white/5 p-4">
       <div className="flex items-center gap-1.5 text-orange-400">
@@ -239,17 +241,17 @@ const MobileStatsCard = () => {
             />
           </g>
         </svg>
-        <div className="text-sm font-medium">Saved Links</div>
+        <div className="text-sm font-medium">{t.hero.savedLinks}</div>
       </div>
       <div className="space-y-3">
         <div className="text-foreground border-b border-white/10 pb-3 text-sm font-medium">
-          You are saving more bookmarks per week this year than in 2023.
+          {t.hero.savingTrend}
         </div>
         <div className="space-y-3">
           <div className="space-y-1">
             <div className="space-x-1">
               <span className="text-foreground align-baseline text-xl font-medium">128</span>
-              <span className="text-muted-foreground text-xs">Saves/week</span>
+              <span className="text-muted-foreground text-xs">{t.hero.savesPerWeek}</span>
             </div>
             <div className="flex h-5 items-center rounded bg-gradient-to-l from-emerald-400 to-indigo-600 px-2 text-xs text-white">
               2026
@@ -258,7 +260,7 @@ const MobileStatsCard = () => {
           <div className="space-y-1">
             <div className="space-x-1">
               <span className="text-foreground align-baseline text-xl font-medium">74</span>
-              <span className="text-muted-foreground text-xs">Saves/week</span>
+              <span className="text-muted-foreground text-xs">{t.hero.savesPerWeek}</span>
             </div>
             <div className="text-foreground bg-muted flex h-5 w-2/3 items-center rounded px-2 text-xs dark:bg-white/20">
               2025
@@ -271,22 +273,25 @@ const MobileStatsCard = () => {
 }
 
 const MobileBookmarkPreview = () => {
+  const { t } = useSiteI18n()
   return (
     <div className="space-y-2">
       <div className="flex items-center gap-1">
-        <span className="rounded-md bg-accent px-2 py-0.5 text-[11px]">全部</span>
-        <span className="rounded-md px-2 py-0.5 text-[11px] text-muted-foreground">链接</span>
-        <span className="rounded-md px-2 py-0.5 text-[11px] text-muted-foreground">文章</span>
+        <span className="rounded-md bg-accent px-2 py-0.5 text-[11px]">{t.hero.all}</span>
+        <span className="rounded-md px-2 py-0.5 text-[11px] text-muted-foreground">{t.hero.links}</span>
+        <span className="rounded-md px-2 py-0.5 text-[11px] text-muted-foreground">
+          {t.hero.articles}
+        </span>
       </div>
       <MobileBookmarkItem
         icon={<Link2 className="size-3.5 text-muted-foreground" />}
-        title="React RSC Caching Patterns"
-        meta="react.dev · 2小时前"
+        title={t.hero.item1Title}
+        meta={t.hero.item1Meta}
       />
       <MobileBookmarkItem
         icon={<FileText className="size-3.5 text-muted-foreground" />}
-        title="AI SDK Tool Calling Guide"
-        meta="vercel.com · 1天前"
+        title={t.hero.item2Title}
+        meta={t.hero.item2Meta}
       />
     </div>
   )
