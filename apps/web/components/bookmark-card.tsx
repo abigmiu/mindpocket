@@ -15,6 +15,7 @@ import NextImage from "next/image"
 import Link from "next/link"
 import { useState } from "react"
 import { hasPlatformIcon, PlatformIcon } from "@/components/icons/platform-icons"
+import { getBookmarkSiteVisual } from "@/lib/bookmark-site-visual"
 import { MoveToFolderDialog } from "@/components/move-to-folder-dialog"
 import { Button } from "@/components/ui/button"
 import {
@@ -94,6 +95,7 @@ export function BookmarkCard({ item }: { item: BookmarkItem }) {
   const domain = getDomain(item.url)
   const gradient = getGradientFromUrl(item.url)
   const [moveDialogOpen, setMoveDialogOpen] = useState(false)
+  const [isFaviconBroken, setIsFaviconBroken] = useState(false)
   const [folderInfo, setFolderInfo] = useState({
     folderId: item.folderId,
     folderName: item.folderName,
@@ -102,6 +104,45 @@ export function BookmarkCard({ item }: { item: BookmarkItem }) {
 
   const displayFolderName = folderInfo.folderName
   const displayFolderEmoji = folderInfo.folderEmoji
+  const siteVisual = getBookmarkSiteVisual({
+    platform: hasPlatformIcon(item.platform) ? item.platform : null,
+    faviconUrl: isFaviconBroken ? null : item.faviconUrl,
+  })
+  const showSiteMeta = siteVisual.kind === "platform" || Boolean(domain)
+  const siteMeta = (() => {
+    if (siteVisual.kind === "platform") {
+      return <PlatformIcon platform={siteVisual.platform} />
+    }
+
+    if (siteVisual.kind === "favicon" && domain) {
+      return (
+        <span className="flex items-center gap-1 truncate">
+          <NextImage
+            alt=""
+            className="size-3 shrink-0 rounded-sm"
+            height={12}
+            loading="lazy"
+            onError={() => setIsFaviconBroken(true)}
+            src={siteVisual.faviconUrl}
+            unoptimized
+            width={12}
+          />
+          <span className="truncate">{domain}</span>
+        </span>
+      )
+    }
+
+    if (domain) {
+      return (
+        <span className="flex items-center gap-1 truncate">
+          <Link2 className="size-3 shrink-0" />
+          <span className="truncate">{domain}</span>
+        </span>
+      )
+    }
+
+    return null
+  })()
 
   return (
     <>
@@ -186,17 +227,8 @@ export function BookmarkCard({ item }: { item: BookmarkItem }) {
                 <span className="truncate">{displayFolderName}</span>
               </span>
             )}
-            {displayFolderName && (hasPlatformIcon(item.platform) || domain) && <span>·</span>}
-            {hasPlatformIcon(item.platform) ? (
-              <PlatformIcon platform={item.platform!} />
-            ) : (
-              domain && (
-                <span className="flex items-center gap-1 truncate">
-                  <Link2 className="size-3 shrink-0" />
-                  <span className="truncate">{domain}</span>
-                </span>
-              )
-            )}
+            {displayFolderName && showSiteMeta && <span>·</span>}
+            {siteMeta}
           </div>
 
           <div className="flex items-center justify-between text-muted-foreground text-xs">

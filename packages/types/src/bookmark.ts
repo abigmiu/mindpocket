@@ -43,6 +43,7 @@ export interface BookmarkItem {
   description: string | null
   url: string | null
   coverImage: string | null
+  faviconUrl: string | null
   isFavorite: boolean
   createdAt: string
   folderId: string | null

@@ -85,6 +85,13 @@
       "when": 1772272800000,
       "tag": "0011_folder_description",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1773929049791,
+      "tag": "0012_bookmark_favicon",
+      "breakpoints": true
     }
   ]
 }

@@ -31,6 +31,7 @@ interface BookmarkLookupRow {
   description: string | null
   url: string | null
   coverImage: string | null
+  faviconUrl: string | null
   isFavorite: boolean
   createdAt: Date
   folderId: string | null
@@ -46,6 +47,7 @@ export interface SearchResultItem {
   description: string | null
   url: string | null
   coverImage: string | null
+  faviconUrl: string | null
   isFavorite: boolean
   createdAt: Date
   folderId: string | null
@@ -423,6 +425,7 @@ async function getBookmarkDetailsByIds({
       description: bookmark.description,
       url: bookmark.url,
       coverImage: bookmark.coverImage,
+      faviconUrl: bookmark.faviconUrl,
       isFavorite: bookmark.isFavorite,
       createdAt: bookmark.createdAt,
       folderId: bookmark.folderId,

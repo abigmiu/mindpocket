@@ -43,6 +43,7 @@ interface BookmarkDetail {
   url: string | null
   content: string | null
   coverImage: string | null
+  faviconUrl: string | null
   isFavorite: boolean
   sourceType: string | null
   fileUrl: string | null

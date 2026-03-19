@@ -20,6 +20,7 @@ export const bookmark = pgTable(
     url: text("url"),
     content: text("content"),
     coverImage: text("cover_image"),
+    faviconUrl: text("favicon_url"),
     metadata: jsonb("metadata"),
     isFavorite: boolean("is_favorite").notNull().default(false),
     sourceType: text("source_type"),

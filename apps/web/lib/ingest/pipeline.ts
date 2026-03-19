@@ -16,6 +16,7 @@ import {
   inferTypeFromExtension,
   inferTypeFromUrl,
 } from "./converter"
+import { fetchFaviconUrl } from "./favicon"
 import { convertWithoutHtml, convertWithPlatform, needsBrowser } from "./platforms"
 import { inferPlatform } from "./types"
 
@@ -72,6 +73,15 @@ async function generateAndStoreEmbeddings(bookmarkId: string, content: string, u
   }
 }
 
+async function updateBookmarkFavicon(bookmarkId: string, url: string) {
+  const faviconUrl = await fetchFaviconUrl(url)
+  if (!faviconUrl) {
+    return
+  }
+
+  await db.update(bookmark).set({ faviconUrl }).where(eq(bookmark.id, bookmarkId))
+}
+
 export async function ingestFromUrl(params: IngestUrlParams): Promise<IngestResult> {
   const { userId, url, folderId, title: userTitle, clientSource } = params
   const bookmarkId = nanoid()
@@ -89,6 +99,8 @@ export async function ingestFromUrl(params: IngestUrlParams): Promise<IngestResu
     platform: inferPlatform(url),
     ingestStatus: "pending" as IngestStatus,
   })
+
+  updateBookmarkFavicon(bookmarkId, url).catch(console.error)
 
   // 触发后台处理，不 await
   processIngestUrl(bookmarkId, url, userId, userTitle).catch(console.error)

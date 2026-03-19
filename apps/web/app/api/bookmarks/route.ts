@@ -41,6 +41,7 @@ export async function GET(request: Request) {
         description: item.description,
         url: item.url,
         coverImage: item.coverImage,
+        faviconUrl: item.faviconUrl,
         isFavorite: item.isFavorite,
         createdAt: item.createdAt,
         folderId: item.folderId,

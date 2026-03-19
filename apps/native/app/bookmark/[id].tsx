@@ -24,6 +24,7 @@ interface BookmarkDetail {
   url: string | null
   content: string | null
   coverImage: string | null
+  faviconUrl: string | null
   platform: string | null
   author: string | null
   createdAt: string
