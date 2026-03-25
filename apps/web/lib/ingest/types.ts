@@ -42,6 +42,24 @@ export const ingestExtensionSchema = z.object({
   clientSource: z.enum(CLIENT_SOURCES),
 })
 
+export const obsidianUpsertSchema = z.object({
+  vaultName: z.string().trim().min(1),
+  relativePath: z.string().trim().min(1),
+  markdown: z.string().min(1),
+  title: z.string().trim().min(1).optional(),
+  hash: z.string().trim().min(1),
+  mtime: z.number().int().nonnegative(),
+  frontmatter: z.record(z.string(), z.unknown()).optional(),
+  tags: z.array(z.string()).optional(),
+  aliases: z.array(z.string()).optional(),
+  wikilinks: z.array(z.string()).optional(),
+  clientSource: z.literal("obsidian").default("obsidian"),
+})
+
+export const obsidianDeleteSchema = z.object({
+  sourceKey: z.string().trim().min(1),
+})
+
 // File extension to bookmark type mapping (web-specific)
 export const EXTENSION_TYPE_MAP: Record<string, BookmarkType> = {
   ".pdf": "document",
