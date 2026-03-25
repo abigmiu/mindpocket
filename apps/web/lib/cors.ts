@@ -2,6 +2,7 @@ const ALLOWED_ORIGINS = new Set([
   "http://127.0.0.1:3000",
   "http://127.0.0.1:8081",
   "http://localhost:8081",
+  "app://obsidian.md",
 ])
 
 export function withCors(req: Request, response: Response): Response {
