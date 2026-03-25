@@ -1,5 +1,14 @@
 import { relations } from "drizzle-orm"
-import { boolean, index, integer, jsonb, pgTable, text, timestamp } from "drizzle-orm/pg-core"
+import {
+  boolean,
+  index,
+  integer,
+  jsonb,
+  pgTable,
+  text,
+  timestamp,
+  uniqueIndex,
+} from "drizzle-orm/pg-core"
 import { user } from "./auth"
 import { folder } from "./folder"
 import { bookmarkTag } from "./tag"
@@ -24,6 +33,7 @@ export const bookmark = pgTable(
     metadata: jsonb("metadata"),
     isFavorite: boolean("is_favorite").notNull().default(false),
     sourceType: text("source_type"),
+    sourceKey: text("source_key"),
     clientSource: text("client_source").notNull().default("web"),
     fileUrl: text("file_url"),
     fileExtension: text("file_extension"),
@@ -43,6 +53,7 @@ export const bookmark = pgTable(
   },
   (table) => [
     index("bookmark_userId_idx").on(table.userId),
+    uniqueIndex("bookmark_user_sourceKey_idx").on(table.userId, table.sourceKey),
     index("bookmark_folderId_idx").on(table.folderId),
     index("bookmark_type_idx").on(table.type),
     index("bookmark_createdAt_idx").on(table.createdAt),

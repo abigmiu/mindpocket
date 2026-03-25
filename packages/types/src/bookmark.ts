@@ -18,13 +18,13 @@ export type BookmarkType = (typeof BOOKMARK_TYPES)[number]
 /**
  * Source type for bookmarks
  */
-export const SOURCE_TYPES = ["url", "file", "extension"] as const
+export const SOURCE_TYPES = ["url", "file", "extension", "obsidian"] as const
 export type SourceType = (typeof SOURCE_TYPES)[number]
 
 /**
  * Client source for bookmarks
  */
-export const CLIENT_SOURCES = ["web", "mobile", "extension"] as const
+export const CLIENT_SOURCES = ["web", "mobile", "extension", "obsidian"] as const
 export type ClientSource = (typeof CLIENT_SOURCES)[number]
 
 /**
