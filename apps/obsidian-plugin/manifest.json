@@ -1,0 +1,9 @@
+{
+  "id": "mindpocket-sync",
+  "name": "MindPocket Sync",
+  "version": "0.0.1",
+  "minAppVersion": "1.5.0",
+  "description": "Sync Obsidian notes into the MindPocket knowledge base.",
+  "author": "Factory",
+  "isDesktopOnly": true
+}
