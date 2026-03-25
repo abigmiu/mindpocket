@@ -39,3 +39,4 @@ PROJECT.md
 apps/web/tsconfig.tsbuildinfo
 .superset/
 .playwright-mcp
+.worktrees/
