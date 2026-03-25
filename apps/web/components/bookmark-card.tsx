@@ -15,7 +15,6 @@ import NextImage from "next/image"
 import Link from "next/link"
 import { useState } from "react"
 import { hasPlatformIcon, PlatformIcon } from "@/components/icons/platform-icons"
-import { getBookmarkSiteVisual } from "@/lib/bookmark-site-visual"
 import { MoveToFolderDialog } from "@/components/move-to-folder-dialog"
 import { Button } from "@/components/ui/button"
 import {
@@ -24,6 +23,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { getBookmarkSiteVisual } from "@/lib/bookmark-site-visual"
 import { useT } from "@/lib/i18n"
 import { cn } from "@/lib/utils"
 

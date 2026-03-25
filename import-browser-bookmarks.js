@@ -80,7 +80,7 @@ async function validateConfig() {
   }
 
   if (!normalizeText(COOKIE_HEADER)) {
-    errors.push('COOKIE_HEADER 未填写，请填入浏览器里复制出来的完整 Cookie')
+    errors.push("COOKIE_HEADER 未填写，请填入浏览器里复制出来的完整 Cookie")
   }
 
   if (!normalizeText(BOOKMARK_HTML_PATH)) {
@@ -134,7 +134,10 @@ function normalizeUrl(input) {
 
 // MindPocket 只有单层 folder，这里把多级浏览器目录折叠成“真实顶级目录”。
 function extractTopLevelFolder(pathSegments) {
-  const filtered = pathSegments.map(normalizeText).filter(Boolean).filter((item) => !isContainerFolder(item))
+  const filtered = pathSegments
+    .map(normalizeText)
+    .filter(Boolean)
+    .filter((item) => !isContainerFolder(item))
   return filtered[0] || null
 }
 
@@ -299,7 +302,7 @@ function buildCurlArgs(url, method, headers, body) {
     "-o",
     "-",
     "-w",
-    "\n__CURL_STATUS__:%{http_code}",
+    "\n__CURL_STATUS__:%{http_code}"
   )
 
   for (const [key, value] of Object.entries(headers)) {
@@ -518,7 +521,12 @@ function buildImportList(parsedBookmarks) {
 
 async function ensureFolders(bookmarks, stats) {
   const folderNames = Array.from(
-    new Set(bookmarks.map((item) => item.targetFolderName).filter(Boolean).map(normalizeText))
+    new Set(
+      bookmarks
+        .map((item) => item.targetFolderName)
+        .filter(Boolean)
+        .map(normalizeText)
+    )
   )
 
   const existingFolders = await fetchFolders()
@@ -551,7 +559,10 @@ async function ensureFolders(bookmarks, stats) {
 }
 
 async function purgeExistingData(stats) {
-  const [existingBookmarks, existingFolders] = await Promise.all([fetchExistingBookmarks(), fetchFolders()])
+  const [existingBookmarks, existingFolders] = await Promise.all([
+    fetchExistingBookmarks(),
+    fetchFolders(),
+  ])
 
   stats.deletedBookmarks = existingBookmarks.length
   stats.deletedFolders = existingFolders.length
@@ -564,20 +575,16 @@ async function purgeExistingData(stats) {
     return { existingBookmarks, existingFolders }
   }
 
-  const bookmarkDeleteResults = await runWithConcurrency(
-    existingBookmarks,
-    CONCURRENCY,
-    (item) => deleteBookmark(item.id)
+  const bookmarkDeleteResults = await runWithConcurrency(existingBookmarks, CONCURRENCY, (item) =>
+    deleteBookmark(item.id)
   )
   const failedBookmarkDeletes = bookmarkDeleteResults.filter((item) => item.status === "rejected")
   if (failedBookmarkDeletes.length > 0) {
     throw new Error(`删除现有书签失败 ${failedBookmarkDeletes.length} 条，请先处理后再重试。`)
   }
 
-  const folderDeleteResults = await runWithConcurrency(
-    existingFolders,
-    CONCURRENCY,
-    (item) => deleteFolder(item.id)
+  const folderDeleteResults = await runWithConcurrency(existingFolders, CONCURRENCY, (item) =>
+    deleteFolder(item.id)
   )
   const failedFolderDeletes = folderDeleteResults.filter((item) => item.status === "rejected")
   if (failedFolderDeletes.length > 0) {
@@ -766,7 +773,11 @@ async function main() {
   console.log(`📚 源书签数: ${stats.sourceBookmarks}`)
   console.log(`🧹 过滤后待处理: ${stats.readyBookmarks}`)
 
-  printSample("⚠️ 跳过的非法 URL 示例:", prepared.skippedInvalid, (item) => `${item.title} -> ${item.rawUrl}`)
+  printSample(
+    "⚠️ 跳过的非法 URL 示例:",
+    prepared.skippedInvalid,
+    (item) => `${item.title} -> ${item.rawUrl}`
+  )
   printSample(
     "♻️ 文件内重复 URL 示例:",
     prepared.skippedDuplicateInFile,

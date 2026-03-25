@@ -71,9 +71,8 @@ test("fetchFaviconUrl returns null when the favicon service request fails", asyn
   )
   assert.ok(fetchFaviconUrl)
 
-  const faviconUrl = await fetchFaviconUrl(
-    "https://sr.deffun.top",
-    () => Promise.reject(new Error("network failed"))
+  const faviconUrl = await fetchFaviconUrl("https://sr.deffun.top", () =>
+    Promise.reject(new Error("network failed"))
   )
 
   assert.equal(faviconUrl, null)
