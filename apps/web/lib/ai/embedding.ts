@@ -6,6 +6,7 @@ import { getDefaultProvider } from "@/db/queries/ai-provider"
 import { bookmark } from "@/db/schema/bookmark"
 import { embedding } from "@/db/schema/embedding"
 import { getEmbeddingModel } from "@/lib/ai/provider"
+import { mapRelevantContentRow } from "./relevant-content"
 
 const CHUNK_SPLIT_REGEX = /[。.!\n]+/
 
@@ -69,6 +70,9 @@ export async function findRelevantContent(userId: string, userQuery: string) {
       content: embedding.content,
       bookmarkId: embedding.bookmarkId,
       similarity,
+      sourceType: bookmark.sourceType,
+      title: bookmark.title,
+      url: bookmark.url,
     })
     .from(embedding)
     .innerJoin(bookmark, eq(embedding.bookmarkId, bookmark.id))
@@ -76,5 +80,10 @@ export async function findRelevantContent(userId: string, userQuery: string) {
     .orderBy((t) => desc(t.similarity))
     .limit(6)
 
-  return results
+  return results.map((result) =>
+    mapRelevantContentRow({
+      ...result,
+      similarity: Number(result.similarity),
+    })
+  )
 }
