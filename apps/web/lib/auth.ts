@@ -25,6 +25,9 @@ export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: "pg",
   }),
+  session: {
+    expiresIn: 60 * 60 * 24 * 365,
+  },
   emailAndPassword: {
     enabled: true,
     async sendResetPassword(_data, _request) {
